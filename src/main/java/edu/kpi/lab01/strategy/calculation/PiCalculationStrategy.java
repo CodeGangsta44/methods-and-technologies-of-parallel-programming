@@ -16,10 +16,9 @@ public class PiCalculationStrategy {
         this.digitsAfterComa = digitsAfterComa;
     }
 
-    public String execute()
+    public String calculate()
     {
         BigDecimal result = BigDecimal.ZERO;
-
 
         for (long i = 0; i < ITERATIONS_LIMIT; i++) {
 

@@ -54,36 +54,41 @@ public class AnalyzationStrategy {
 
     private long executeInSingleThread(final int numberOfTasks) {
 
+        return executeTest(() -> performSerialRun(numberOfTasks));
+    }
+
+    private long executeInParallel(final int numberOfTasks) {
+
+        return executeTest(() -> performParallelRun(numberOfTasks));
+    }
+
+    private long executeTest(final Runnable task) {
+
+        task.run();
+
         long start = System.nanoTime();
 
-        for (var i = 0; i < 10; i++) {
-
-            IntStream.range(0, numberOfTasks)
-                    .forEach(number -> action.run());
-        }
+        for (var i = 0; i < 10; i++) task.run();
 
         long finish = System.nanoTime();
 
         return (finish - start) / 10;
     }
 
-    private long executeInParallel(final int numberOfTasks) {
+    private void performSerialRun(final int numberOfTasks) {
 
-        long start = System.nanoTime();
+        IntStream.range(0, numberOfTasks)
+                .forEach(number -> action.run());
+    }
 
-        for (var i = 0; i < 10; i++) {
+    private void performParallelRun(final int numberOfTasks) {
 
-            final Thread[] threads = IntStream.range(0, numberOfTasks)
-                    .mapToObj(number -> new Thread(action))
-                    .toArray(Thread[]::new);
+        final Thread[] threads = IntStream.range(0, numberOfTasks)
+                .mapToObj(number -> new Thread(action))
+                .toArray(Thread[]::new);
 
-            for (final Thread thread : threads) thread.start();
-            for (final Thread thread : threads) joinThread(thread);
-        }
-
-        long finish = System.nanoTime();
-
-        return (finish - start) / 10;
+        for (final Thread thread : threads) thread.start();
+        for (final Thread thread : threads) joinThread(thread);
     }
 
     private void joinThread(final Thread thread) {
