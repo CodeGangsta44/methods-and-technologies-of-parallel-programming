@@ -10,6 +10,10 @@ public class Constants {
     public static class Configuration {
 
         public static final int WARM_UP_THREADS = 1;
+        public static final int SERIAL_WARM_UP_THREADS = 1;
+        public static final int PARALLEL_WARM_UP_THREADS = 2;
+
+        public static final int WARM_UP_SIZE = 100;
     }
 
     public static class Output {

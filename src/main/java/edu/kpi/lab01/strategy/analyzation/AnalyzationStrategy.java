@@ -2,13 +2,12 @@ package edu.kpi.lab01.strategy.analyzation;
 
 import edu.kpi.common.contoller.WriteOutputController;
 
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static edu.kpi.common.constants.Constants.Configuration.WARM_UP_THREADS;
 import static edu.kpi.common.constants.Constants.Messages.POWER_OF_TWO_MESSAGE;
-import static edu.kpi.common.constants.Constants.Output.DURATION_FORMAT;
 import static edu.kpi.common.constants.Constants.Output.RESULT_HEADER;
+import static edu.kpi.common.utils.DurationUtils.convertDuration;
 
 public class AnalyzationStrategy {
 
@@ -116,13 +115,5 @@ public class AnalyzationStrategy {
 
         executeInSingleThread(WARM_UP_THREADS);
         executeInParallel(WARM_UP_THREADS);
-    }
-
-    private String convertDuration(final long duration) {
-
-        final long seconds = TimeUnit.NANOSECONDS.toSeconds(duration);
-        final long milliseconds = TimeUnit.NANOSECONDS.toMillis(duration) - TimeUnit.SECONDS.toMillis(seconds);
-
-        return String.format(DURATION_FORMAT, seconds, milliseconds);
     }
 }
