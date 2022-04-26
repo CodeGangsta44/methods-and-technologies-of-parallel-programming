@@ -11,22 +11,20 @@ public class Main {
     public static void main(final String... args) {
 
         new AnalyzationStrategy(128,
-                10,
+                5,
                 "./results/lab02/results.csv",
                 100,
                 1000,
-                100,
+                50,
                 threadQty -> new ParallelMatrixMultiplicationStrategy<>(threadQty,
                         Integer::sum,
                         (i1, i2) -> i1 * i2,
-                        (d1, d2) -> new Integer[d1][d2],
                         () -> 0),
                 threadQty -> new ParallelMinimalElementSearchStrategy<>(threadQty, Integer::compareTo),
                 () -> new SerialMatrixMultiplicationStrategy<>(Integer::sum,
                         (i1, i2) -> i1 * i2,
-                        (d1, d2) -> new Integer[d1][d2],
                         () -> 0),
                 () -> new SerialMinimalElementSearchStrategy<>(Integer::compareTo))
-        .execute();
+                .execute();
     }
 }

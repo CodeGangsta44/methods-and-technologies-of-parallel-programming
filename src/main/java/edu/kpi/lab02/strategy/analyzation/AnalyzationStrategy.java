@@ -67,11 +67,10 @@ public class AnalyzationStrategy {
 
         final var builder = new StringBuilder("#;" + getHeader() + "\n");
 
-        IntStream.range(0, (maxSize - minSize) / stepSize)
+        IntStream.range(0, ((maxSize - minSize) / stepSize) + 1)
                 .boxed()
                 .map(iteration -> minSize + (iteration * stepSize))
                 .map(this::executeForSize)
-                .peek(System.out::print)
                 .forEach(builder::append);
 
         WriteOutputController.writeToFile(resultFilePath, builder.toString());
@@ -89,13 +88,14 @@ public class AnalyzationStrategy {
         return size + ";" + getThreadQuantities()
                 .map(threadQty -> executeForNumberOfThreadsAndSize(threadQty, size))
                 .map(String::valueOf)
-                .collect(Collectors.joining(";"));
+                .collect(Collectors.joining(";")) + "\n";
     }
 
     private long executeForNumberOfThreadsAndSize(final int threadQty, final int size) {
 
         return execute(getStrategy(serialMultiplicationStrategy, parallelMultiplicationStrategy, threadQty),
                 getStrategy(serialMinimalElementSearchStrategy, parallelMinimalElementSearchStrategy, threadQty),
+                createMatrix(size),
                 createMatrix(size),
                 createMatrix(size));
     }
@@ -115,14 +115,14 @@ public class AnalyzationStrategy {
 
     private long execute(final MatrixMultiplicationStrategy<Integer> multiplicationStrategy,
                          final MinimalElementSearchStrategy<Integer> minimalElementSearchStrategy,
-                         final Integer[][] matrix1, final Integer[][] matrix2) {
+                         final Integer[][] matrix1, final Integer[][] matrix2, final Integer[][] result) {
 
         long start = System.nanoTime();
 
         for (var i = 0; i < iterations; i++) {
 
-            minimalElementSearchStrategy.find(multiplicationStrategy
-                    .multiply(matrix1, matrix2));
+            multiplicationStrategy.multiply(matrix1, matrix2, result);
+            minimalElementSearchStrategy.find(result);
         }
 
         return (System.nanoTime() - start) / iterations;

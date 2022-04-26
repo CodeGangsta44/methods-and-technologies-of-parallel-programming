@@ -2,7 +2,6 @@ package edu.kpi.lab02.strategy.serial;
 
 import edu.kpi.lab02.strategy.MatrixMultiplicationStrategy;
 
-import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
@@ -12,29 +11,22 @@ public class SerialMatrixMultiplicationStrategy<T extends Number> implements Mat
     private final BinaryOperator<T> addFunction;
     private final BinaryOperator<T> multiplyFunction;
     private final Supplier<T> zeroInstantiator;
-    private final BiFunction<Integer, Integer, T[][]> resultInstantiator;
 
     public SerialMatrixMultiplicationStrategy(final BinaryOperator<T> addFunction,
                                               final BinaryOperator<T> multiplyFunction,
-                                              final BiFunction<Integer, Integer, T[][]> resultInstantiator,
                                               final Supplier<T> zeroInstantiator) {
 
         this.addFunction = addFunction;
         this.multiplyFunction = multiplyFunction;
-        this.resultInstantiator = resultInstantiator;
         this.zeroInstantiator = zeroInstantiator;
     }
 
     @Override
-    public T[][] multiply(final T[][] firstMatrix, final T[][] secondMatrix) {
+    public void multiply(final T[][] firstMatrix, final T[][] secondMatrix, final T[][] result) {
 
         validateMatrices(firstMatrix, secondMatrix);
 
-        final T[][] result = resultInstantiator.apply(firstMatrix.length, secondMatrix[0].length);
-
         multiplyMatrices(firstMatrix, secondMatrix, result);
-
-        return result;
     }
 
     private void validateMatrices(final T[][] firstMatrix, final T[][] secondMatrix) {

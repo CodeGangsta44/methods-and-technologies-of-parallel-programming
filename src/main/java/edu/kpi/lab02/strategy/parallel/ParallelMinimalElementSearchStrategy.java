@@ -45,10 +45,9 @@ public class ParallelMinimalElementSearchStrategy<T extends Number> implements M
     @Override
     public Pair find(final T[][] matrix) {
 
-        List<List<Pair>> threadBuckets = createThreadBuckets(matrix);
-
-        final List<Task> threads = threadBuckets.stream()
-                .map(bucket -> new Task(() -> findMinimalElementInBucket(matrix, bucket)))
+        final List<Task> threads = IntStream.range(0, threadQuantity)
+                .boxed()
+                .map(index -> new Task(() -> findMinimalElement(matrix, index)))
                 .collect(Collectors.toList());
 
         for (final Thread thread : threads) thread.start();
@@ -61,34 +60,27 @@ public class ParallelMinimalElementSearchStrategy<T extends Number> implements M
                 .orElseThrow(() -> new IllegalArgumentException("Empty result!"));
     }
 
-    private List<Pair> getCoordinatePairs(final T[][] matrix) {
+    private Pair findMinimalElement(final T[][] matrix, final int currentThread) {
 
-        return IntStream.range(0, matrix.length)
-                .boxed()
-                .flatMap(firstIndex -> IntStream.range(0, matrix[0].length)
-                        .mapToObj(secondIndex -> new Pair(firstIndex, secondIndex)))
-                .collect(Collectors.toList());
-    }
+        int length = matrix.length;
+        int width = matrix[0].length;
+        int bound = length * width;
 
-    private List<List<Pair>> createThreadBuckets(final T[][] matrix) {
+        var minimalX = 0;
+        var minimalY = 0;
+        var currentMinimal = matrix[minimalX][minimalY];
 
-        final List<Pair> coordinates = getCoordinatePairs(matrix);
+        for (int i = currentThread; i < bound; i += threadQuantity) {
 
-        return IntStream.range(0, coordinates.size())
-                .boxed()
-                .collect(Collectors.groupingBy(index -> index % threadQuantity))
-                .values()
-                .stream()
-                .map(integers -> integers.stream().map(coordinates::get).collect(Collectors.toList()))
-                .collect(Collectors.toList());
-    }
+            if (comparator.compare(matrix[i / width][i % width], currentMinimal) < 0) {
 
-    private Pair findMinimalElementInBucket(final T[][] matrix, final List<Pair> bucket) {
+                minimalX = i / width;
+                minimalY = i % width;
+                currentMinimal = matrix[i / width][i % width];
+            }
+        }
 
-        return bucket.stream()
-                .min((pair1, pair2) -> comparator.compare(matrix[pair1.getFirstIndex()][pair1.getSecondIndex()],
-                        matrix[pair2.getFirstIndex()][pair2.getSecondIndex()]))
-                .orElseThrow(() -> new IllegalArgumentException("Empty bucket!"));
+        return new Pair(minimalX, minimalY);
     }
 
     private void joinThread(final Thread thread) {
