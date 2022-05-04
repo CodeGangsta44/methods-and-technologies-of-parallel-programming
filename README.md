@@ -31,3 +31,26 @@ for different types of tasks depending on the number of threads.
 
 ![Efficiency coefficient](results/lab01/charts/efficiencyCoefficient.png)
 ___
+
+## [LAB-02] - Means of interaction and synchronization of threads in parallel multithreaded programs
+
+**Task:**
+Implement following task using multi-threaded programming tools. Two matrices (not necessarily square) of a given (numerical) type are specified.
+Multiply these matrices, then find the minimum element of the resulting matrix (according to a given comparison criterion),
+return its value and indices in the matrix.
+
+Measure the dependence of execution time on the number of threads and the amount of input data.
+
+#### Detailed results: [link](./results/lab02/results.md)
+
+### Conclusion:
+In scope of this laboratory work serial and parallel strategies for multiplication and finding the minimal element were created.
+Research has shown that program execution time is significantly reduced depending on the number of threads used. 
+At the same time, no significant effect of the size of the input data on the acceleration factor was found 
+(except for slightly better results on small volumes, which is most likely due to the possibility of efficient use of CPU cache).
+Confirmation of this can also be seen in the charts of the dependence of the average acceleration coefficients
+depending on the number of threads and matrix size.
+
+![Acceleration coefficient by Threads QTY](results/lab02/charts/accelerationByThreads.png)
+
+![Acceleration coefficient by Matrix size](results/lab02/charts/accelerationBySize.png)
