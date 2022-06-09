@@ -54,3 +54,26 @@ depending on the number of threads and matrix size.
 ![Acceleration coefficient by Threads QTY](results/lab02/charts/accelerationByThreads.png)
 
 ![Acceleration coefficient by Matrix size](results/lab02/charts/accelerationBySize.png)
+___
+
+## [LAB-03] - Training project on parallel multithreaded programming. Brownian motion modeling
+
+**Task:**
+The Brownian motion of particles (impurities) in a one-dimensional crystal consisting of N cells is simulated.
+The movement of each of the K particles is simulated independently, on a separate thread.
+The motion of particles is determined by the following rule: at each moment of time (at each iteration) the particle
+moves either to the right (with probability p) or to the left (with probability 1-p). When the crystal limit is reached,
+the particle is reflected from it (ie does not go beyond the crystal). Initially, all impurities are in the first (left) cell of the crystal.
+Particle movements are monitored in the interface (graphical or console).
+Simulation is performed in two modes: with a time limit and the number of iterations. In the first mode,
+the program execution time and the delay between iterations are set; the program runs for a specified time.
+In the second mode, each particle makes a given number of movements (iterations); the program ends when all particles have made all the movements.
+
+#### Detailed results: [link](./results/lab03/results.md)
+
+### Conclusion:
+In scope of this laboratory work timed and limited Brownian motion simulation strategies were created.
+The basis of the implementation is the representation of each elementary particle as a separate thread.
+The crystal is presented in the form of a two-dimensional matrix of AtomicInteger elements,
+which allowed secure access of different threads to the shared memory area.
+In addition, phaser was used to properly synchronize the operation of threads during timed simulation.
