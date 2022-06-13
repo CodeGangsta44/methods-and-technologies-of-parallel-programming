@@ -72,8 +72,38 @@ In the second mode, each particle makes a given number of movements (iterations)
 #### Detailed results: [link](./results/lab03/results.md)
 
 ### Conclusion:
+
 In scope of this laboratory work timed and limited Brownian motion simulation strategies were created.
 The basis of the implementation is the representation of each elementary particle as a separate thread.
 The crystal is presented in the form of a two-dimensional matrix of AtomicInteger elements,
 which allowed secure access of different threads to the shared memory area.
 In addition, phaser was used to properly synchronize the operation of threads during timed simulation.
+
+---
+
+## [LAB-05] - Training project on parallel multithreaded programming. Messaging system
+
+**Task:**
+Implement a network program for messaging (similar to chat). Possible functionality for implementation:
+- Send text messages
+- Basic text formatting
+- File transfer
+- Send multimedia messages (images, audio, video, web links)
+- Transmission of individual messages
+- Transmission of messages to all participants (broadcast)
+- Groups of participants, sending messages to all members of this group
+- List of participants
+- Tracking of participants who have disconnected due to network problems
+- Ability to send messages to participants who are currently offline
+
+It is not necessary to implement all the described functionality, but a significant part must be implemented.
+You can also implement additional features that make sense for such programs.
+
+#### Detailed results: [link](./results/lab05/results.md)
+
+### Conclusion:
+In scope of this laboratory work simple messaging (chat) system was created. System has client-server architecture
+and using socket connections as main and single communication channel. On the server side each user connection
+is represented by separate process, that is being served in parallel. Instead, on the client side, the connection
+is processed by two separate threads: Reader and Writer. In addition, file transfer operations are performed by creation
+of new socket connections to not block user interface.

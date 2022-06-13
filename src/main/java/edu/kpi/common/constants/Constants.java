@@ -26,4 +26,12 @@ public class Constants {
 
         public static final String POWER_OF_TWO_MESSAGE = "Max threads argument should be power of two";
     }
+
+    public static class DataSource {
+
+        public static final String USERS = "users.json";
+        public static final String FILES = "files.json";
+        public static final String GROUP_CHATS = "groupChats.json";
+        public static final String PERSONAL_CHATS = "personalChats.json";
+    }
 }

@@ -1,4 +1,4 @@
-To accomplish this task special class [Particle](../../src/main/java/edu/kpi/lab03/particle/Particle.java) which represents elementary particle in a crystal.
+To accomplish this task special class [Particle](../../src/main/java/edu/kpi/lab03/particle/Particle.java), which represents elementary particle in a crystal, was created.
 This class extends Thread, so can run independently. Crystal is a shared memory and represented in this simulation as 2D array of AtomicInteger objects (to avoid synchronization issues).
 
 Also the following strategies were implemented:
